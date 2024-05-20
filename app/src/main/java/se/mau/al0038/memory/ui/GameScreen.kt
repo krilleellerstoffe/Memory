@@ -1,5 +1,6 @@
 package se.mau.al0038.memory.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,7 +24,8 @@ import se.mau.al0038.memory.ui.viewModel.MemoryGridViewModel
 
 @Composable
 fun GameScreen(
-    memoryGridViewModel: MemoryGridViewModel = viewModel(),
+    memoryGridViewModel: MemoryGridViewModel,
+    onBackButtonClick: () -> Unit
 )
 {
     val gridState = memoryGridViewModel.gridState
@@ -29,7 +33,7 @@ fun GameScreen(
     Scaffold(
         topBar = {
             MemoryTopBar(
-                onBackClick = {},
+                onBackClick = onBackButtonClick,
                 true,
             )
         }
@@ -55,8 +59,8 @@ fun GameScreen(
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
-                                gridState.matrix[i][j],
-                                {}
+                                cell = gridState.matrix[i][j],
+                                onButtonClick = { memoryGridViewModel.cardFlippedFunction(i, j) }
                         )
                     }
                 }
@@ -68,24 +72,29 @@ fun GameScreen(
 @Composable
 fun MemoryButton(
     modifier: Modifier,
-    cell:Cell,
-    onButtonClick: (Cell) -> Unit
+    cell: Cell,
+    onButtonClick: () -> Unit
 ){
     Card(
         modifier = modifier.clickable {
-            onButtonClick(cell)
+            onButtonClick()
         }
-    ){
-        if(cell.image != null){
-            Image(
-                imageVector = cell.image,
-                contentDescription = null
-            )
-        }else{
-            Image(
-                imageVector = Icons.Default.Done,
-                contentDescription = null
-            )
+    ) {
+        if (cell.isFlipped) {
+            if (cell.image != null) {
+                Image(
+                    imageVector = cell.image,
+                    contentDescription = null
+                )
+            } else {
+                Image(
+                    imageVector = Icons.Default.Done,
+                    contentDescription = null
+                )
+            }
+            Text(text = cell.style)
+        } else {
+            Image(imageVector = Icons.Default.Menu, contentDescription = null)
         }
     }
 }
