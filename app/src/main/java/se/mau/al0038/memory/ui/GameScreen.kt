@@ -1,6 +1,5 @@
 package se.mau.al0038.memory.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +15,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import se.mau.al0038.memory.MemoryTopBar
 import se.mau.al0038.memory.data.Cell
 import se.mau.al0038.memory.ui.viewModel.MemoryGridViewModel
@@ -28,7 +30,10 @@ fun GameScreen(
     onBackButtonClick: () -> Unit
 )
 {
-    val gridState = memoryGridViewModel.gridState
+    val cells = remember {
+        (memoryGridViewModel.cellList)
+    }
+
 
     Scaffold(
         topBar = {
@@ -45,7 +50,8 @@ fun GameScreen(
                 verticalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            for(i in gridState.matrix.indices) {
+            var index = 0
+            for(i in (0..<memoryGridViewModel.gameSettings.difficulty.x)) {
 
                 Row(
                     modifier = Modifier
@@ -54,14 +60,16 @@ fun GameScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
 
-                    for (j in gridState.matrix[i].indices) {
+                    for (j in (0..<memoryGridViewModel.gameSettings.difficulty.y)) {
+                        val clickIndex = index
                         MemoryButton(
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxHeight(),
-                                cell = gridState.matrix[i][j],
-                                onButtonClick = { memoryGridViewModel.cardFlippedFunction(i, j) }
+                                cell = cells[index],
+                                onButtonClick = { memoryGridViewModel.cardFlippedFunction(clickIndex) }
                         )
+                        index++
                     }
                 }
             }
@@ -76,14 +84,16 @@ fun MemoryButton(
     onButtonClick: () -> Unit
 ){
     Card(
+
         modifier = modifier.clickable {
             onButtonClick()
+
         }
     ) {
         if (cell.isFlipped) {
             if (cell.image != null) {
                 Image(
-                    imageVector = cell.image,
+                    imageVector = cell.image!!,
                     contentDescription = null
                 )
             } else {

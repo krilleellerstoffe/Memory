@@ -4,37 +4,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import se.mau.al0038.memory.data.Cell
 import se.mau.al0038.memory.data.Difficulty
-import se.mau.al0038.memory.data.Grid
 import se.mau.al0038.memory.data.Settings
 
 class MemoryGridViewModel: ViewModel() {
 
     var gameSettings by mutableStateOf(Settings())
 
-    var gridState by mutableStateOf(Grid(Array(4) {
-        Array(4) {
-            Cell(
-                randomImage(),
-                "",
-                false,
-            )
-        }
-    }))
+    var cellList = mutableStateListOf<Cell>()
         private set
 
-    fun cardFlippedFunction(x: Int, y: Int) {
-        val newMatrix = gridState.matrix
-        newMatrix[x][y].isFlipped = !newMatrix[x][y].isFlipped
+    fun cardFlippedFunction(i: Int) {
 
-        gridState = gridState.copy(
-            matrix = newMatrix
-        )
+        val flippedCell = cellList[i].copy(isFlipped = !cellList[i].isFlipped)
+        cellList[i] = flippedCell
     }
 
     fun setGameSettingDifficulty(difficulty: Difficulty) {
@@ -44,15 +34,9 @@ class MemoryGridViewModel: ViewModel() {
     }
 
     fun generateGrid() {
-        val cells = getListOfCells()
+        getListOfCells().forEach { cellList.add(it) }
 
 
-        val index: Int
-        gridState = Grid(Array(gameSettings.difficulty.x) {i ->
-            Array(gameSettings.difficulty.y) {j ->
-                cells[gameSettings.difficulty.x * i + j]
-            }
-        })
     }
 
     private fun getListOfCells(): List<Cell> {

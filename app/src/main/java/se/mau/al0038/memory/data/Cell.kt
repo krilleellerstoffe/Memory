@@ -5,5 +5,5 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class Cell(
     val image : ImageVector?,
     val style : String,
-    var isFlipped: Boolean
+    val isFlipped: Boolean
 )
