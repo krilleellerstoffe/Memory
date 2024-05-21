@@ -5,9 +5,17 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import se.mau.al0038.memory.data.PlayerStats
+import se.mau.al0038.memory.data.highscore.HighScoreRepository
+import javax.inject.Inject
 
-class HighScoreInputViewModel: ViewModel() {
+
+@HiltViewModel
+class HighScoreInputViewModel @Inject constructor(
+    //Hilt Impl
+    private val highScoreRepository: HighScoreRepository
+): ViewModel() {
 
     var newHighScore by mutableStateOf(false)
     private val highScores = mutableStateListOf<PlayerStats>()
@@ -17,7 +25,7 @@ class HighScoreInputViewModel: ViewModel() {
     }
 
     init {
-        getStatsList()
+        addElementsToMutableList(highScoreRepository.getHighScoreHistory())
     }
 
     fun evaluateIfNewHighScore(newPlayerScore: Int) {
@@ -28,7 +36,9 @@ class HighScoreInputViewModel: ViewModel() {
         newHighScore = highScores.find { it.score < newPlayerScore } !== null
     }
 
-    private fun getStatsList() {
-        highScores.add(PlayerStats(1,1,1))
+    private fun addElementsToMutableList(highScoreHistory: List<PlayerStats>) {
+        highScoreHistory.forEach {
+            highScores.add(it)
+        }
     }
 }

@@ -5,13 +5,14 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import se.mau.al0038.memory.data.PlayerStats
 import se.mau.al0038.memory.ui.viewModel.HighScoreInputViewModel
 
 @Composable
 fun HighScoreDialog(
-    highScoreInputViewModel: HighScoreInputViewModel = viewModel(),
+    //Hilt Impl
+    highScoreInputViewModel: HighScoreInputViewModel = hiltViewModel(),
     playerStats: PlayerStats,
     onDismissRequest: () -> Unit,
     onViewHighScore: () -> Unit
