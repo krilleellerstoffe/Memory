@@ -11,7 +11,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,15 +19,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import se.mau.al0038.memory.R
 import se.mau.al0038.memory.data.Difficulty
-import se.mau.al0038.memory.ui.viewModel.MemoryGridViewModel
+import se.mau.al0038.memory.ui.viewModel.GameViewModel
 
 @Composable
 fun StartScreen(
-    memoryGridViewModel: MemoryGridViewModel,
+    memoryGridViewModel: GameViewModel,
     onStartButtonClick: () -> Unit
 ){
     Scaffold(

@@ -22,7 +22,8 @@ fun MemoryApp(
 @Composable
 fun MemoryTopBar(
     onBackClick: () -> Unit,
-    canNavigateBack: Boolean
+    canNavigateBack: Boolean,
+    title: @Composable () -> Unit = { Text(stringResource(id = R.string.app_name)) }
 ){
     TopAppBar(
         navigationIcon = {
@@ -35,6 +36,6 @@ fun MemoryTopBar(
                 }
             }
         },
-        title = { Text(stringResource(id = R.string.app_name))}
+        title = title,
     )
 }
