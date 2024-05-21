@@ -1,5 +1,6 @@
 package se.mau.al0038.memory.ui.viewModel
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Star
@@ -7,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import se.mau.al0038.memory.data.Cell
@@ -21,10 +21,47 @@ class MemoryGridViewModel: ViewModel() {
     var cellList = mutableStateListOf<Cell>()
         private set
 
-    fun cardFlippedFunction(i: Int) {
+    private var firstCard: Cell? = null
+    private var secondCard: Cell? = null
 
+    fun cardFlippedFunction(i: Int): Boolean {
+        //if already two cards flipped
+        if (firstCard != null && secondCard != null) {
+            Log.d("MemoryGridViewModel", "Already two cards flipped")
+            return true
+        }
+        //else flip card an save it
         val flippedCell = cellList[i].copy(isFlipped = !cellList[i].isFlipped)
         cellList[i] = flippedCell
+        if (firstCard == null) {
+            Log.d("MemoryGridViewModel", "First card flipped")
+            firstCard = flippedCell
+        } else {
+            secondCard = flippedCell
+        }
+        return false
+
+    }
+
+    fun checkIfMatch() {
+        if (firstCard != null && secondCard != null) {
+            if (firstCard!!.style == secondCard!!.style) {
+                Log.d("MemoryGridViewModel", "Match")
+                resetCards()
+                //update score
+            } else {
+                Log.d("MemoryGridViewModel", "No match")
+                val firstIndex = cellList.indexOf(firstCard)
+                val secondIndex = cellList.indexOf(secondCard)
+                cellList[firstIndex] = firstCard!!.copy(isFlipped = false)
+                cellList[secondIndex] = secondCard!!.copy(isFlipped = false)
+                resetCards()
+            }
+        }
+    }
+    fun resetCards() {
+        firstCard = null
+        secondCard = null
     }
 
     fun setGameSettingDifficulty(difficulty: Difficulty) {
@@ -34,6 +71,7 @@ class MemoryGridViewModel: ViewModel() {
     }
 
     fun generateGrid() {
+        cellList.clear()
         getListOfCells().forEach { cellList.add(it) }
 
 
