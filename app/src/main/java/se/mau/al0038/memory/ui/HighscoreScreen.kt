@@ -1,5 +1,6 @@
 package se.mau.al0038.memory.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -19,6 +20,10 @@ fun HighScoreScreen(
     highScoreScreenViewModel: HighScoreScreenViewModel = hiltViewModel(),
     onBackClick: () -> Unit
 ) {
+    BackHandler(
+        enabled = true,
+        onBack = onBackClick
+    )
     Scaffold(
         topBar = {
             MemoryTopBar(
@@ -32,14 +37,14 @@ fun HighScoreScreen(
             modifier = Modifier.padding(paddingValues),
         ) {
             items(highScoreScreenViewModel.highScores) {
-                highScoreItem(highScore = it)
+                HighScoreItem(highScore = it)
             }
         }
     }
 }
 
 @Composable
-fun highScoreItem(
+fun HighScoreItem(
     highScore: HighScore
 ) {
     Card {

@@ -20,23 +20,32 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.hilt.navigation.compose.hiltViewModel
 import se.mau.al0038.memory.MemoryTopBar
 import se.mau.al0038.memory.data.Cell
+import se.mau.al0038.memory.data.PlayerStats
+import se.mau.al0038.memory.data.Settings
 import se.mau.al0038.memory.ui.viewModel.GameViewModel
 
 @Composable
 fun GameScreen(
-    gameViewModel: GameViewModel,
+    gameViewModel: GameViewModel = hiltViewModel(),
     onBackButtonClick: () -> Unit,
-    onViewHighScore: () -> Unit
+    onViewHighScore: () -> Unit,
+    settings: Settings
 )
 {
+    LaunchedEffect(true) {
+        gameViewModel.generateGrid(settings)
+    }
+
     val cells = remember {
         (gameViewModel.cellList)
     }
@@ -79,9 +88,14 @@ fun GameScreen(
             MemoryTopBar(
                 onBackClick = onBackButtonClick,
                 true,
-                title = { Text(text = "Player:${gameViewModel.currentPlayer}" +
-                        "  Attempts:${gameViewModel.playerStats[gameViewModel.currentPlayer].attempts}" +
-                        "  Score:${gameViewModel.playerStats[gameViewModel.currentPlayer].score}")}
+                title = {
+                    val playerStats = gameViewModel.playerStats.getOrElse(gameViewModel.currentPlayer) { PlayerStats() }
+                    Text(
+                        text = "Player:${gameViewModel.currentPlayer}" +
+                                "  Attempts:${playerStats.attempts}" +
+                                "  Score:${playerStats.score}"
+                    )
+                }
             )
         }
     ) {innerPadding ->

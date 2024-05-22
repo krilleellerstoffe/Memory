@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.OutlinedTextField
@@ -21,20 +19,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import coil.compose.SubcomposeAsyncImage
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
+import androidx.lifecycle.viewmodel.compose.viewModel
 import se.mau.al0038.memory.R
 import se.mau.al0038.memory.data.Difficulty
-import se.mau.al0038.memory.ui.viewModel.GameViewModel
+import se.mau.al0038.memory.data.Settings
+import se.mau.al0038.memory.ui.viewModel.StartScreenViewModel
 
 @Composable
 fun StartScreen(
-    memoryGridViewModel: GameViewModel,
-    onStartButtonClick: () -> Unit
+    startScreenViewModel: StartScreenViewModel = viewModel(),
+    onStartButtonClick: (Settings) -> Unit
 ){
     Scaffold(
 
@@ -54,7 +49,7 @@ fun StartScreen(
 
                 Box {
                     OutlinedTextField(
-                        value = memoryGridViewModel.gameSettings.playerCount.toString(),
+                        value = startScreenViewModel.gameSettings.playerCount.toString(),
                         onValueChange = {},
                         readOnly = true,
                         enabled = false,
@@ -63,7 +58,7 @@ fun StartScreen(
                     DropdownMenu(expanded = showPlayerCountDropDown, onDismissRequest = { showPlayerCountDropDown = !showPlayerCountDropDown }) {
                        for(i in (1..4)) {
                            DropdownMenuItem(text = { Text(text = i.toString()) }, onClick = {
-                               memoryGridViewModel.gameSettings = memoryGridViewModel.gameSettings.copy(
+                               startScreenViewModel.gameSettings = startScreenViewModel.gameSettings.copy(
                                    playerCount = i
                                )
                                showPlayerCountDropDown = false
@@ -76,7 +71,7 @@ fun StartScreen(
 
                 Box {
                     OutlinedTextField(
-                        value = memoryGridViewModel.gameSettings.difficulty.toString(),
+                        value = startScreenViewModel.gameSettings.difficulty.toString(),
                         onValueChange = {},
                         readOnly = true,
                         enabled = false,
@@ -86,15 +81,15 @@ fun StartScreen(
                         expanded = showDifficultyDropdown,
                         onDismissRequest = { showDifficultyDropdown = !showDifficultyDropdown }) {
                         DropdownMenuItem(text = {Text(text = Difficulty.Easy.toString()) }, onClick = {
-                            memoryGridViewModel.setGameSettingDifficulty(Difficulty.Easy)
+                            startScreenViewModel.setGameSettingDifficulty(Difficulty.Easy)
                             showDifficultyDropdown = !showDifficultyDropdown
                         })
                         DropdownMenuItem(text = { Text(text = Difficulty.Intermediate.toString()) }, onClick = {
-                            memoryGridViewModel.setGameSettingDifficulty(Difficulty.Intermediate)
+                            startScreenViewModel.setGameSettingDifficulty(Difficulty.Intermediate)
                             showDifficultyDropdown = !showDifficultyDropdown
                         })
                         DropdownMenuItem(text = { Text(text = Difficulty.Hard.toString()) }, onClick = {
-                            memoryGridViewModel.setGameSettingDifficulty(Difficulty.Hard)
+                            startScreenViewModel.setGameSettingDifficulty(Difficulty.Hard)
                             showDifficultyDropdown = !showDifficultyDropdown
                         })
                     }
@@ -103,8 +98,7 @@ fun StartScreen(
 
             Button(
                 onClick = {
-                    memoryGridViewModel.generateGrid()
-                    onStartButtonClick()
+                    onStartButtonClick(startScreenViewModel.gameSettings)
                 }
             ) {
                 Text(text = stringResource(id = R.string.start_game))

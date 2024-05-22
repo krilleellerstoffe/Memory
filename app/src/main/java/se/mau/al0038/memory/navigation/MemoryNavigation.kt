@@ -1,47 +1,57 @@
 package se.mau.al0038.memory.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import se.mau.al0038.memory.data.Difficulty
+import se.mau.al0038.memory.data.Settings
 import se.mau.al0038.memory.ui.GameScreen
 import se.mau.al0038.memory.ui.HighScoreScreen
 import se.mau.al0038.memory.ui.StartScreen
-import se.mau.al0038.memory.ui.viewModel.GameViewModel
 
 @Composable
 fun MemoryNavHost(
     navController: NavHostController = rememberNavController(),
-    memoryGridViewModel: GameViewModel = hiltViewModel()
-){
+) {
 
     NavHost(
         navController = navController,
         startDestination = "Start"
-    ){
+    ) {
 
         composable(route = "Start") {
-            StartScreen(memoryGridViewModel = memoryGridViewModel, onStartButtonClick = { navController.navigate("Game") })
+            StartScreen(onStartButtonClick = { navController.navigate("Game/${it.difficulty.name}/${it.playerCount}") })
         }
 
-        composable(route = "Game") {
+        composable(
+            route = "Game/{difficulty}/{playerCount}",
+            arguments = listOf(navArgument("difficulty") { type = NavType.StringType },
+                navArgument("playerCount") { type = NavType.IntType }
+            )
+        ) {
             GameScreen(
-                gameViewModel = memoryGridViewModel,
                 onBackButtonClick = { navController.popBackStack("Start", false) },
-                onViewHighScore = { navController.navigate("HighScore") })
+                onViewHighScore = { navController.navigate("HighScore") },
+                settings = Settings(
+                    it.arguments?.getInt("playerCount") ?: 0,
+                    Difficulty.valueOf(it.arguments?.getString("difficulty") ?: "Easy")
+                )
+            )
         }
 
-        composable(route = "Settings"){
+        composable(route = "Settings") {
 
         }
 
-        composable(route = "Summary"){
+        composable(route = "Summary") {
 
         }
 
-        composable(route = "HighScore"){
+        composable(route = "HighScore") {
             HighScoreScreen(onBackClick = { navController.popBackStack("Start", false) })
         }
     }

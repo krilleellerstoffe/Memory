@@ -23,7 +23,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import se.mau.al0038.memory.data.Cell
-import se.mau.al0038.memory.data.Difficulty
 import se.mau.al0038.memory.data.PlayerStats
 import se.mau.al0038.memory.data.Settings
 import javax.inject.Inject
@@ -46,6 +45,16 @@ class GameViewModel @Inject constructor(
 
     private var firstCard: Cell? = null
     private var secondCard: Cell? = null
+
+    fun generateGrid(settings: Settings) {
+        gameSettings = settings
+
+        for (i in 0..<gameSettings.playerCount) {
+            playerStats.add(PlayerStats())
+        }
+
+        getListOfCells()
+    }
 
     fun cardFlippedFunction(i: Int): Boolean {
         //if already two cards flipped
@@ -99,23 +108,7 @@ class GameViewModel @Inject constructor(
         secondCard = null
     }
 
-    fun setGameSettingDifficulty(difficulty: Difficulty) {
-        gameSettings = gameSettings.copy(
-            difficulty = difficulty
-        )
-    }
 
-    fun generateGrid() {
-        playerStats.clear()
-
-        for (i in 0..<gameSettings.playerCount) {
-            playerStats.add(PlayerStats())
-        }
-
-        cellList.clear()
-        getListOfCells()
-
-    }
 
     private fun getListOfCells() {
         val length: Int = gameSettings.difficulty.x * gameSettings.difficulty.y
