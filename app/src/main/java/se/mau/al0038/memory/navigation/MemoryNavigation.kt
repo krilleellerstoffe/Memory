@@ -1,6 +1,7 @@
 package se.mau.al0038.memory.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -14,7 +15,7 @@ import se.mau.al0038.memory.ui.viewModel.GameViewModel
 @Composable
 fun MemoryNavHost(
     navController: NavHostController = rememberNavController(),
-    memoryGridViewModel: GameViewModel = viewModel()
+    memoryGridViewModel: GameViewModel = hiltViewModel()
 ){
 
     NavHost(

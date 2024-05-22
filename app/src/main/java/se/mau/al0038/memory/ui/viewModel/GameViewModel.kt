@@ -1,5 +1,7 @@
 package se.mau.al0038.memory.ui.viewModel
 
+import android.content.Context
+import android.graphics.drawable.BitmapDrawable
 import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -9,14 +11,27 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.launch
 import se.mau.al0038.memory.data.Cell
 import se.mau.al0038.memory.data.Difficulty
 import se.mau.al0038.memory.data.PlayerStats
 import se.mau.al0038.memory.data.Settings
+import javax.inject.Inject
 
-class GameViewModel: ViewModel() {
+@HiltViewModel
+class GameViewModel @Inject constructor(
+    @ApplicationContext private val context: Context
+): ViewModel() {
 
     var gameSettings by mutableStateOf(Settings())
 
@@ -98,26 +113,44 @@ class GameViewModel: ViewModel() {
         }
 
         cellList.clear()
-        getListOfCells().forEach { cellList.add(it) }
+        getListOfCells()
+
     }
 
-    private fun getListOfCells(): List<Cell> {
+    private fun getListOfCells() {
         val length: Int = gameSettings.difficulty.x * gameSettings.difficulty.y
         val numberOfStylesNeeded = length/2
 
+        //create random seeds to call api with and use for comparison
         val styles = listOf("Pixel", "Realistic", "Cool", "Cute", "Dark", "Bright", "Big Ears", "Cruudles", "Personas", "Botts", "Dogs")
             .shuffled().subList(0, numberOfStylesNeeded)
-        val returnList: ArrayList<Cell> = ArrayList()
-
-        styles.forEach{
-            val img = randomImage()
-            returnList.add(Cell(img, it, false))
-            returnList.add(Cell(img, it, false))
+        //fetch images using seeds and add to cells
+        val scope = viewModelScope
+        scope.launch{
+            getImages(styles).forEach { cellList.add(it) }
+            Log.d("GameViewModel", "Finished getting images")
         }
-
-        return returnList.shuffled()
     }
 
+    private suspend fun getImages(styles: List<String>): List<Cell> {
+        var cellsWithImages: ArrayList<Cell> = ArrayList()
+        styles.forEach{
+            val loader = ImageLoader(context)
+            val request = ImageRequest.Builder(context)
+                .data("https://api.dicebear.com/8.x/bottts/svg?seed=$it")
+                .decoderFactory(SvgDecoder.Factory())
+                .build()
+
+            Log.d("Requester", "image requested with style: $it")
+            val result = (loader.execute(request) as SuccessResult).drawable
+            val img = (result as BitmapDrawable).bitmap
+            val imgBitmap = img.asImageBitmap()
+            cellsWithImages.add(Cell(imgBitmap, it, false))
+            cellsWithImages.add(Cell(imgBitmap, it, false))
+            Log.d("Requester", "image added to cell with style: $it")
+        }
+        return cellsWithImages.shuffled()
+    }
     private fun randomImage(): ImageVector? {
         return setOf(
             Icons.Filled.Refresh,
