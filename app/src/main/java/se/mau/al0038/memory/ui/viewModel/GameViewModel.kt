@@ -3,16 +3,13 @@ package se.mau.al0038.memory.ui.viewModel
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.util.Log
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
@@ -115,41 +112,51 @@ class GameViewModel @Inject constructor(
         val numberOfStylesNeeded = length/2
 
         //create random seeds to call api with and use for comparison
-        val styles = listOf("Pixel", "Realistic", "Cool", "Cute", "Dark", "Bright", "Big Ears", "Cruudles", "Personas", "Botts", "Dogs")
+        val seeds = listOf("Pixel", "Realistic", "Cool", "Cute", "Dark", "Bright", "Big Ears", "Cruudles", "Personas", "Botts", "Dogs")
+            .shuffled().subList(0, 2)
+        val styles = listOf("adventurer", "avataaars", "big-ears", "big-smile", "bottts", "croodles", "lorelei", "micah", "miniavs", "notionists", "open-peeps", "personas", "pixel-art", "thumbs")
             .shuffled().subList(0, numberOfStylesNeeded)
         //fetch images using seeds and add to cells
         val scope = viewModelScope
         scope.launch{
-            getImages(styles).forEach { cellList.add(it) }
+            generateCellsWithApiImages(seeds, styles).forEach { cellList.add(it) }
             Log.d("GameViewModel", "Finished getting images")
         }
     }
 
-    private suspend fun getImages(styles: List<String>): List<Cell> {
-        var cellsWithImages: ArrayList<Cell> = ArrayList()
+    private suspend fun generateCellsWithApiImages(
+        seeds: List<String>,
+        styles: List<String>,
+        ): List<Cell> {
+        val cellsWithImages: ArrayList<Cell> = ArrayList()
         styles.forEach{
-            val loader = ImageLoader(context)
-            val request = ImageRequest.Builder(context)
-                .data("https://api.dicebear.com/8.x/bottts/svg?seed=$it")
-                .decoderFactory(SvgDecoder.Factory())
-                .build()
+            val imgOne = getImage(it, seeds[0])
+            val imgTwo = getImage(it, seeds[1])
 
-            Log.d("Requester", "image requested with style: $it")
-            val result = (loader.execute(request) as SuccessResult).drawable
-            val img = (result as BitmapDrawable).bitmap
-            val imgBitmap = img.asImageBitmap()
-            cellsWithImages.add(Cell(imgBitmap, it, false))
-            cellsWithImages.add(Cell(imgBitmap, it, false))
+            cellsWithImages.add(Cell(imgOne, it, false))
+            cellsWithImages.add(Cell(imgTwo, it, false))
             Log.d("Requester", "image added to cell with style: $it")
         }
         return cellsWithImages.shuffled()
     }
-    private fun randomImage(): ImageVector? {
-        return setOf(
-            Icons.Filled.Refresh,
-            Icons.Filled.Star,
-            null
-        ).random()
+
+    private suspend fun getImage(style : String, seed : String): ImageBitmap? {
+        val loader = ImageLoader(context)
+        val request = ImageRequest.Builder(context)
+            .data("https://api.dicebear.com/8.x/$style/svg?seed=$seed")
+            .decoderFactory(SvgDecoder.Factory())
+            .build()
+
+        Log.d("Requester", "image requested with style: $style")
+        try {
+            val result = (loader.execute(request) as SuccessResult).drawable
+            val img = (result as BitmapDrawable).bitmap
+            val imgBitmap = img.asImageBitmap()
+            return imgBitmap
+        } catch (e : ClassCastException) {
+            Log.d("Requester", "Image request failed for Style: $style, Seed: $seed")
+            return null
+        }
     }
 
     fun resetGame() {
