@@ -158,4 +158,9 @@ class GameViewModel @Inject constructor(
             null
         ).random()
     }
+
+    fun resetGame() {
+        isGameOver = !isGameOver
+        cellList.clear()
+    }
 }

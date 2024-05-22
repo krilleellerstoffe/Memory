@@ -60,7 +60,14 @@ fun GameScreen(
             confirmButton = { Button(onClick = { onViewHighScore() }) {
                 Text(text = "View High score")
             }},
-            dismissButton = { Button(onClick = { onBackButtonClick() }) {
+            dismissButton = {
+                Button(onClick = {
+                    onBackButtonClick()
+                    gameViewModel.resetGame()
+                    //clear viewmodel
+                }
+
+                ) {
                 Text(text = "Back to menu")
             }},
         )
