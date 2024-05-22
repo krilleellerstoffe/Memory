@@ -17,10 +17,8 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,13 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import coil.compose.SubcomposeAsyncImage
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import se.mau.al0038.memory.MemoryTopBar
-import se.mau.al0038.memory.R
 import se.mau.al0038.memory.data.Cell
 import se.mau.al0038.memory.ui.viewModel.GameViewModel
 
@@ -75,8 +67,9 @@ fun GameScreen(
         if (showHighScore && gameViewModel.gameSettings.playerCount == 1) {
             HighScoreDialog(
                 playerStats = gameViewModel.playerStats[0],
-                onDismissRequest = { showHighScore = false }) {
-            }
+                onDismissRequest = { showHighScore = false },
+                onViewHighScore = onViewHighScore
+            )
         }
     }
 

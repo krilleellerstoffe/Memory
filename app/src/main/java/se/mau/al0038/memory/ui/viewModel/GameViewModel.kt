@@ -161,7 +161,7 @@ class GameViewModel @Inject constructor(
 
     fun resetGame() {
         isGameOver = !isGameOver
-        playerStats.clear()
-        cellList.clear()
+        //playerStats.clear()
+        //cellList.clear()
     }
 }

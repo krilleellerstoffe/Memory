@@ -24,16 +24,16 @@ fun HighScoreDialog(
             onDismissRequest = { onDismissRequest() },
             title = { Text(text = "High score!") },
             text = {
-                TextField(value = "", onValueChange = {})
+                TextField(value = highScoreInputViewModel.playerName, onValueChange = { highScoreInputViewModel.playerName = it })
             },
             confirmButton = {
-                Button(onClick = { onViewHighScore() }) {
-                    Text(text = "View High score")
+                Button(onClick = { highScoreInputViewModel.insertNewHighScore(playerStats); onViewHighScore() }) {
+                    Text(text = "Save High Score")
                 }
             },
             dismissButton = {
                 Button(onClick = { onDismissRequest() }) {
-                    Text(text = "Don't save")
+                    Text(text = "Don't Save")
                 }
             },
         )
