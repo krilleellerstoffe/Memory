@@ -47,10 +47,6 @@ fun MemoryNavHost(
 
         }
 
-        composable(route = "Summary") {
-
-        }
-
         composable(route = "HighScore") {
             HighScoreScreen(onBackClick = { navController.popBackStack("Start", false) })
         }
