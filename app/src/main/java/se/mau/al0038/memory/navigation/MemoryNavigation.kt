@@ -38,7 +38,7 @@ fun MemoryNavHost(
         composable(
             route = "Game/{difficulty}/{playerCount}",
             arguments = listOf(navArgument("difficulty") { type = NavType.StringType },
-                navArgument("playerCount") { type = NavType.IntType }
+                navArgument("playerCount") { type = NavType.StringType }
             )
         ) {
             GameScreen(
