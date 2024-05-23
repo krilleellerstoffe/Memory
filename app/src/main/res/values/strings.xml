@@ -31,5 +31,7 @@
     Lorem ipsum etcetera. Lorem ipsum etcetera. </string>
     <string name="en" translatable="false">English</string>
     <string name="sv" translatable="false">Svenska</string>
-    <string name="system_default">System Default</string>
+    <string name="system_default" translatable="false">Default</string>
+    <string name="dark_mode">Night Mode</string>
+    <string name="light_mode">Light Mode</string>
 </resources>

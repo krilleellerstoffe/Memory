@@ -11,6 +11,7 @@ import se.mau.al0038.memory.data.Difficulty
 import se.mau.al0038.memory.data.Settings
 import se.mau.al0038.memory.ui.GameScreen
 import se.mau.al0038.memory.ui.HighScoreScreen
+import se.mau.al0038.memory.ui.SettingsScreen
 import se.mau.al0038.memory.ui.StartScreen
 
 @Composable
