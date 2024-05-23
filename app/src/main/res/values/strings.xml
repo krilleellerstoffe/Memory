@@ -29,4 +29,7 @@
     Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
 
     Lorem ipsum etcetera. Lorem ipsum etcetera. </string>
+    <string name="en" translatable="false">English</string>
+    <string name="sv" translatable="false">Svenska</string>
+    <string name="system_default">System Default</string>
 </resources>

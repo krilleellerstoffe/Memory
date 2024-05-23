@@ -11,4 +11,5 @@
     <string name="attempts">Försök:%1$s</string>
     <string name="score">Poäng:%1$s</string>
     <string name="about">Memory är fett.</string>
+    <string name="system_default">Systemspråk</string>
 </resources>
