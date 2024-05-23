@@ -29,7 +29,9 @@ import se.mau.al0038.memory.ui.viewModel.StartScreenViewModel
 @Composable
 fun StartScreen(
     startScreenViewModel: StartScreenViewModel = viewModel(),
-    onStartButtonClick: (Settings) -> Unit
+    onStartButtonClick: (Settings) -> Unit,
+    onSettingsClick: () -> Unit,
+    onHighScoreClick: () -> Unit
 ){
     Scaffold(
 
@@ -104,10 +106,10 @@ fun StartScreen(
                 Text(text = stringResource(id = R.string.start_game))
 
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = onHighScoreClick) {
                 Text(text = stringResource(id = R.string.highscore))
             }
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = onSettingsClick) {
                 Text(text = stringResource(id = R.string.settings))
             }
 
