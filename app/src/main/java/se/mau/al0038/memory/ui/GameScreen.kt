@@ -27,8 +27,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import se.mau.al0038.memory.MemoryTopBar
+import se.mau.al0038.memory.R
 import se.mau.al0038.memory.data.Cell
 import se.mau.al0038.memory.data.PlayerStats
 import se.mau.al0038.memory.data.Settings
@@ -91,9 +93,15 @@ fun GameScreen(
                 title = {
                     val playerStats = gameViewModel.playerStats.getOrElse(gameViewModel.currentPlayer) { PlayerStats() }
                     Text(
-                        text = "Player:${gameViewModel.currentPlayer}" +
-                                "  Attempts:${playerStats.attempts}" +
-                                "  Score:${playerStats.score}"
+                        text = stringResource(
+                            R.string.current_player,
+                            gameViewModel.currentPlayer
+                        ) + " " + stringResource(
+                            R.string.attempts,
+                            playerStats.attempts
+                        ) + " " + stringResource(
+                            R.string.score,
+                            playerStats.score)
                     )
                 }
             )

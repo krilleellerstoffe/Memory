@@ -1,7 +1,32 @@
 <resources>
-    <string name="app_name">Memory</string>
+    <string name="app_name" translatable="false">Memory</string>
     <string name="start_game">Start Game</string>
     <string name="settings">Settings</string>
     <string name="highscore">Highscore</string>
-    <string name="description">imagedescription</string>
+    <string name="description" translatable="false">imagedescription</string>
+    <string name="current_player">Player:%1$s</string>
+    <string name="easy">Easy</string>
+    <string name="intermediate">Intermediate</string>
+    <string name="hard">Hard</string>
+    <string name="languageHeader">Language</string>
+    <string name="attempts">"Attempts:%1$s"</string>
+    <string name="score">"Score:%1$s"</string>
+    <string name="about">Memory was created as a group project to demonstrate a bunch of things.\n
+        Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera.
+    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
+
+    Lorem ipsum etcetera. Lorem ipsum etcetera. </string>
 </resources>

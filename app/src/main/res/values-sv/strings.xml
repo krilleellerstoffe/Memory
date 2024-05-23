@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_game">Nytt Spel</string>
+    <string name="settings">Inställningar</string>
+    <string name="highscore">Topplista</string>
+    <string name="current_player">Spelare:%1$s</string>
+    <string name="easy">Lätt</string>
+    <string name="intermediate">Medel</string>
+    <string name="hard">Svårt</string>
+    <string name="languageHeader">Språk</string>
+    <string name="attempts">Försök:%1$s</string>
+    <string name="score">Poäng:%1$s</string>
+    <string name="about">Memory är fett.</string>
+</resources>
