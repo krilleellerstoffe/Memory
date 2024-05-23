@@ -40,6 +40,7 @@ import androidx.compose.ui.zIndex
 import androidx.lifecycle.viewmodel.compose.viewModel
 import se.mau.al0038.memory.R
 import se.mau.al0038.memory.data.Difficulty
+import se.mau.al0038.memory.data.PlayerCount
 import se.mau.al0038.memory.data.Settings
 import se.mau.al0038.memory.ui.viewModel.StartScreenViewModel
 
@@ -79,27 +80,38 @@ fun StartScreen(
                 Column(
                     modifier = Modifier
                         .padding(8.dp)
-                        .width(160.dp)
+                        .size(160.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
+                    val playerCountIds = listOf(
+                        R.string.one,
+                        R.string.two,
+                        R.string.three
+                    )
                     SettingsDropdown(
-                        label = "Players",
-                        items = listOf("1", "2", "3"),
-                        selectedItem = startScreenViewModel.gameSettings.playerCount.toString(),
-                        onItemSelected = {
-                            startScreenViewModel.gameSettings =
-                                startScreenViewModel.gameSettings.copy(playerCount = it.toInt())
-                        })
-
-                    SettingsDropdown(
-                        label = "Difficulty",
-                        items = Difficulty.entries.map { it.name },
-                        selectedItem = startScreenViewModel.gameSettings.difficulty.name,
+                        label = stringResource(id = R.string.players),
+                        items = playerCountIds,
+                        selectedItem = startScreenViewModel.gameSettings.playerCount.stringId,
                         onItemSelected = {
                             startScreenViewModel.gameSettings =
                                 startScreenViewModel.gameSettings.copy(
-                                    difficulty = Difficulty.valueOf(
-                                        it
-                                    )
+                                    playerCount = PlayerCount.fromStringId(it)
+                                )
+                        })
+
+                    val difficultyIds = listOf(
+                        R.string.easy,
+                        R.string.intermediate,
+                        R.string.hard
+                    )
+                    SettingsDropdown(
+                        label = stringResource(id = R.string.difficulty),
+                        items = difficultyIds,
+                        selectedItem = startScreenViewModel.gameSettings.difficulty.stringId,
+                        onItemSelected = {
+                            startScreenViewModel.gameSettings =
+                                startScreenViewModel.gameSettings.copy(
+                                    difficulty = Difficulty.fromStringId(it)
                                 )
                         })
                 }
@@ -110,7 +122,7 @@ fun StartScreen(
                     },
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(150.dp),
+                        .size(160.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text(
@@ -132,13 +144,14 @@ fun StartScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .height(80.dp)
-                        .width(150.dp),
+                        .width(160.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text(
                         text = stringResource(id = R.string.settings),
                         style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        softWrap = false
                     )
                 }
                 Spacer(modifier = Modifier.weight(.5f))
@@ -147,7 +160,7 @@ fun StartScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .height(80.dp)
-                        .width(150.dp),
+                        .width(160.dp),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Text(
@@ -170,9 +183,9 @@ fun StartScreen(
 @Composable
 fun SettingsDropdown(
     label: String,
-    items: List<String>,
-    selectedItem: String,
-    onItemSelected: (String) -> Unit
+    items: List<Int>,
+    selectedItem: Int,
+    onItemSelected: (Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -183,7 +196,7 @@ fun SettingsDropdown(
             .clip(RoundedCornerShape(8.dp))
     ) {
         OutlinedTextField(
-            value = selectedItem,
+            value = stringResource(id = selectedItem),
             onValueChange = {},
             readOnly = true,
             enabled = false,
@@ -206,7 +219,7 @@ fun SettingsDropdown(
         ) {
             items.forEach { item ->
                 DropdownMenuItem(
-                    text = { Text(text = item) },
+                    text = { Text(text = stringResource(id = item)) },
                     onClick = {
                         onItemSelected(item)
                         expanded = !expanded

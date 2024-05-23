@@ -51,7 +51,7 @@ class GameViewModel @Inject constructor(
     fun generateGrid(settings: Settings) {
         gameSettings = settings
 
-        for (i in 0..<gameSettings.playerCount) {
+        for (i in 0..< gameSettings.playerCount.count) {
             playerStats.add(PlayerStats())
         }
 
@@ -98,7 +98,7 @@ class GameViewModel @Inject constructor(
                 cellList[secondIndex] = secondCard!!.copy(isFlipped = false)
                 resetCards()
 
-                currentPlayer = (currentPlayer + 1) % gameSettings.playerCount
+                currentPlayer = (currentPlayer + 1) % gameSettings.playerCount.count
             }
         }
 

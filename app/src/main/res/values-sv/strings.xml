@@ -12,4 +12,9 @@
     <string name="score">Poäng:%1$s</string>
     <string name="about">Memory är fett.</string>
     <string name="system_default">Systemspråk</string>
+    <string name="players">Spelare</string>
+    <string name="difficulty">Svårighet</string>
+    <string name="one">En</string>
+    <string name="two">Två</string>
+    <string name="three">Tre</string>
 </resources>
