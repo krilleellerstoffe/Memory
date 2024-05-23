@@ -11,6 +11,7 @@ import se.mau.al0038.memory.data.Difficulty
 import se.mau.al0038.memory.data.Settings
 import se.mau.al0038.memory.ui.GameScreen
 import se.mau.al0038.memory.ui.HighScoreScreen
+import se.mau.al0038.memory.ui.SettingsScreen
 import se.mau.al0038.memory.ui.StartScreen
 
 @Composable
@@ -24,7 +25,13 @@ fun MemoryNavHost(
     ) {
 
         composable(route = "Start") {
-            StartScreen(onStartButtonClick = { navController.navigate("Game/${it.difficulty.name}/${it.playerCount}") })
+            StartScreen(
+                onStartButtonClick = {
+                    navController.navigate("Game/${it.difficulty.name}/${it.playerCount}")
+                },
+                onSettingsClick = { navController.navigate("Settings") },
+                onHighScoreClick = { navController.navigate("HighScore") }
+            )
         }
 
         composable(
