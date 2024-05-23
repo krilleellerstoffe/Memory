@@ -25,10 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.colorResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import se.mau.al0038.memory.MemoryTopBar
+import se.mau.al0038.memory.R
 import se.mau.al0038.memory.data.Cell
 import se.mau.al0038.memory.data.PlayerStats
 import se.mau.al0038.memory.data.Settings
@@ -57,20 +60,34 @@ fun GameScreen(
     if (gameViewModel.isGameOver) {
         AlertDialog(
             onDismissRequest = { /*TODO*/ },
-            title = { Text(text = "GameOver") },
-            confirmButton = { Button(onClick = { onViewHighScore() }) {
-                Text(text = "View High score")
-            }},
-            dismissButton = {
-                Button(onClick = {
-                    onBackButtonClick()
-                    gameViewModel.resetGame()
-                    //clear viewmodel
-                }
-
+            title = { Text(text = "Game Over") },
+            confirmButton = {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                Text(text = "Back to menu")
-            }},
+                    Button(onClick = { onViewHighScore() }) {
+                        Text(text = "View High score")
+                    }
+                }
+            },
+            dismissButton = {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Button(
+                        onClick = {
+                            onBackButtonClick()
+                            gameViewModel.resetGame()
+                            //clear viewmodel
+                        },
+                    ) {
+                        Text(text = "Back to menu")
+                    }
+                }
+            },
+            containerColor = colorResource(id = R.color.light_blue)
         )
 
         if (showHighScore && gameViewModel.gameSettings.playerCount == 1) {
