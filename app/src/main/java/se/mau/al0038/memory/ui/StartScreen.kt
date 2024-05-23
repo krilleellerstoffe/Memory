@@ -82,15 +82,15 @@ fun StartScreen(
                     DropdownMenu(
                         expanded = showDifficultyDropdown,
                         onDismissRequest = { showDifficultyDropdown = !showDifficultyDropdown }) {
-                        DropdownMenuItem(text = {Text(text = Difficulty.Easy.toString()) }, onClick = {
+                        DropdownMenuItem(text = {Text(text = stringResource(id = R.string.easy)) }, onClick = {
                             startScreenViewModel.setGameSettingDifficulty(Difficulty.Easy)
                             showDifficultyDropdown = !showDifficultyDropdown
                         })
-                        DropdownMenuItem(text = { Text(text = Difficulty.Intermediate.toString()) }, onClick = {
+                        DropdownMenuItem(text = { Text(text = stringResource(id = R.string.intermediate)) }, onClick = {
                             startScreenViewModel.setGameSettingDifficulty(Difficulty.Intermediate)
                             showDifficultyDropdown = !showDifficultyDropdown
                         })
-                        DropdownMenuItem(text = { Text(text = Difficulty.Hard.toString()) }, onClick = {
+                        DropdownMenuItem(text = { Text(text = stringResource(id = R.string.hard)) }, onClick = {
                             startScreenViewModel.setGameSettingDifficulty(Difficulty.Hard)
                             showDifficultyDropdown = !showDifficultyDropdown
                         })

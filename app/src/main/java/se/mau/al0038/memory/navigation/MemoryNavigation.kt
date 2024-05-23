@@ -50,7 +50,9 @@ fun MemoryNavHost(
         }
 
         composable(route = "Settings") {
-
+            SettingsScreen(
+                onBackButtonClick = { navController.popBackStack("Start", false) }
+            )
         }
 
         composable(route = "HighScore") {
