@@ -47,4 +47,13 @@
     <string name="dark_mode">Night Mode</string>
     <string name="light_mode">Light Mode</string>
     <string name="dark_mode_header">Theme</string>
+    <string name="info_title">Match the style!</string>
+    <string name="info_body">There are two different pictures in each art style, those would be a match.</string>
+    <string name="info_examples">Style examples: Pixel-Art, Big-Ears, Big-Smile, Adventurer</string>
+    <string name="info_api_fetching">The game fetches the images from an API, which should allow for a nice variation of images.</string>
+    <string name="back_to_menu">Main menu</string>
+    <string name="game_over">Congratulations!</string>
+    <string name="save_high_score">Save high score</string>
+    <string name="dont_save">Don\'t save</string>
+    <string name="highscore_card">Name: %s\nScore: %d\nAttempts: %d</string>
 </resources>

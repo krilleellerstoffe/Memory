@@ -4,18 +4,23 @@ import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,8 +31,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -63,14 +69,14 @@ fun GameScreen(
     if (gameViewModel.isGameOver) {
         AlertDialog(
             onDismissRequest = { /*TODO*/ },
-            title = { Text(text = "Game Over") },
+            title = { Text(text = stringResource(id = R.string.game_over)) },
             confirmButton = {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Button(onClick = { onViewHighScore() }) {
-                        Text(text = "View High score")
+                        Text(text = stringResource(id = R.string.highscore))
                     }
                 }
             },
@@ -86,11 +92,11 @@ fun GameScreen(
                             //clear viewmodel
                         },
                     ) {
-                        Text(text = "Back to menu")
+                        Text(text =   stringResource(id = R.string.back_to_menu))
                     }
                 }
             },
-            containerColor = colorResource(id = R.color.light_blue)
+            containerColor = MaterialTheme.colorScheme.tertiary
         )
 
         if (showHighScore && gameViewModel.gameSettings.playerCount.count == 1) {
@@ -155,7 +161,6 @@ fun GameScreen(
                                     clickIndex = clickIndex,
                                     cardFlipFunction =  gameViewModel::cardFlippedFunction,
                                     onFlipFinish = gameViewModel::checkIfMatch
-
                             )
                             index++
                         }
@@ -171,18 +176,22 @@ fun GameScreen(
 
 @Composable
 fun LoadingInformation() {
-    Column(
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Match the style!", fontSize = 25.sp)
-        Spacer(modifier = Modifier.padding(10.dp))
-        Text(text = "There are two different pictures in each art style, those would be a match.", fontSize = 20.sp)
-        Text(text = "Style examples: Pixel-Art, Big-Ears, Big-Smile, Adventurer", fontSize = 20.sp)
-        Spacer(modifier = Modifier.padding(20.dp))
-        Text(text = "The game fetches the images from an API, which should allow for a nice variation of images.", fontSize = 20.sp)
-        Spacer(modifier = Modifier.padding(20.dp))
-        CircularProgressIndicator()
+    Box {
+        Background()
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = stringResource(id = R.string.info_title), fontSize = 25.sp)
+            Spacer(modifier = Modifier.padding(10.dp))
+            Text(text = stringResource(id = R.string.info_body), fontSize = 20.sp)
+            Text(text = stringResource(id = R.string.info_examples), fontSize = 20.sp)
+            Spacer(modifier = Modifier.padding(20.dp))
+            Text(text = stringResource(id = R.string.info_api_fetching), fontSize = 20.sp)
+            Spacer(modifier = Modifier.padding(20.dp))
+            CircularProgressIndicator()
+        }
     }
 }
 
@@ -212,6 +221,7 @@ fun MemoryButton(
     )
 
     Card(
+        colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .clickable {
                 if (cell.isFlipped) {
@@ -222,15 +232,19 @@ fun MemoryButton(
             .graphicsLayer {
                 rotationY = flipAnimation
             }
+            .border(2.dp, Color.Black)
     ) {
         if (cell.isFlipped) {
             if (cell.image != null) {
                 Image(
                     bitmap = cell.image,
                     contentDescription = null,
-                    modifier = Modifier.graphicsLayer {
-                        alpha = fadeImageIn
-                    }
+                    modifier = Modifier
+                        .graphicsLayer {
+                            alpha = fadeImageIn
+                        }
+                        .fillMaxSize(),
+                    contentScale = ContentScale.FillWidth,
                 )
             } else {
                 Text(
@@ -242,11 +256,14 @@ fun MemoryButton(
             }
         } else {
             Image(
-                painter = painterResource(id = R.drawable.question_mark),
+                painter = painterResource(id = R.drawable.start_background),
                 contentDescription = null,
-                modifier = Modifier.graphicsLayer {
-                    alpha = fadeImageOut
-                }.align(Alignment.CenterHorizontally)
+                modifier = Modifier
+                    .graphicsLayer {
+                        alpha = fadeImageOut
+                    }
+                    .fillMaxSize(),
+                contentScale = ContentScale.FillBounds,
             )
         }
     }
