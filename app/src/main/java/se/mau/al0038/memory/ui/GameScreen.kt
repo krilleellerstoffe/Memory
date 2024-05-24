@@ -90,7 +90,7 @@ fun GameScreen(
             containerColor = colorResource(id = R.color.light_blue)
         )
 
-        if (showHighScore && gameViewModel.gameSettings.playerCount == 1) {
+        if (showHighScore && gameViewModel.gameSettings.playerCount.count == 1) {
             HighScoreDialog(
                 playerStats = gameViewModel.playerStats[0],
                 onDismissRequest = { showHighScore = false },

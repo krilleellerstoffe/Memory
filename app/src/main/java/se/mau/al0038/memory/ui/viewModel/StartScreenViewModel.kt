@@ -16,4 +16,5 @@ class StartScreenViewModel: ViewModel() {
             difficulty = difficulty
         )
     }
+
 }

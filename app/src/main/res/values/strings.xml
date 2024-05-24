@@ -32,6 +32,11 @@
     <string name="en" translatable="false">English</string>
     <string name="sv" translatable="false">Svenska</string>
     <string name="system_default" translatable="false">Default</string>
+    <string name="players">Players</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="one">One</string>
+    <string name="two">Two</string>
+    <string name="three">Three</string>
     <string name="dark_mode">Night Mode</string>
     <string name="light_mode">Light Mode</string>
 </resources>

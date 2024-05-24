@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import se.mau.al0038.memory.data.Difficulty
+import se.mau.al0038.memory.data.PlayerCount
 import se.mau.al0038.memory.data.Settings
 import se.mau.al0038.memory.ui.GameScreen
 import se.mau.al0038.memory.ui.HighScoreScreen
@@ -37,14 +38,14 @@ fun MemoryNavHost(
         composable(
             route = "Game/{difficulty}/{playerCount}",
             arguments = listOf(navArgument("difficulty") { type = NavType.StringType },
-                navArgument("playerCount") { type = NavType.IntType }
+                navArgument("playerCount") { type = NavType.StringType }
             )
         ) {
             GameScreen(
                 onBackButtonClick = { navController.popBackStack("Start", false) },
                 onViewHighScore = { navController.navigate("HighScore") },
                 settings = Settings(
-                    it.arguments?.getInt("playerCount") ?: 0,
+                    PlayerCount.valueOf(it.arguments?.getString("playerCount") ?: "One"),
                     Difficulty.valueOf(it.arguments?.getString("difficulty") ?: "Easy")
                 )
             )

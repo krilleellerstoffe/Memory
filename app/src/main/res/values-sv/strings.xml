@@ -11,6 +11,11 @@
     <string name="attempts">Försök:%1$s</string>
     <string name="score">Poäng:%1$s</string>
     <string name="about">Memory är fett.</string>
+    <string name="players">Spelare</string>
+    <string name="difficulty">Svårighet</string>
+    <string name="one">En</string>
+    <string name="two">Två</string>
+    <string name="three">Tre</string>
     <string name="dark_mode">Mörkt Tema</string>
     <string name="light_mode">Ljust Tema</string>
 </resources>

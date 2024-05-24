@@ -18,6 +18,8 @@ import coil.request.ImageRequest
 import coil.request.SuccessResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import se.mau.al0038.memory.data.Cell
 import se.mau.al0038.memory.data.PlayerStats
@@ -27,7 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GameViewModel @Inject constructor(
     @ApplicationContext private val context: Context
-): ViewModel() {
+) : ViewModel() {
 
     var gameSettings by mutableStateOf(Settings())
 
@@ -43,10 +45,13 @@ class GameViewModel @Inject constructor(
     private var firstCard: Cell? = null
     private var secondCard: Cell? = null
 
+    private var imageLoader: ImageLoader = ImageLoader(context)
+    private val svgDecoderFactory = SvgDecoder.Factory()
+
     fun generateGrid(settings: Settings) {
         gameSettings = settings
 
-        for (i in 0..<gameSettings.playerCount) {
+        for (i in 0..< gameSettings.playerCount.count) {
             playerStats.add(PlayerStats())
         }
 
@@ -93,7 +98,7 @@ class GameViewModel @Inject constructor(
                 cellList[secondIndex] = secondCard!!.copy(isFlipped = false)
                 resetCards()
 
-                currentPlayer = (currentPlayer + 1) % gameSettings.playerCount
+                currentPlayer = (currentPlayer + 1) % gameSettings.playerCount.count
             }
         }
 
@@ -106,56 +111,104 @@ class GameViewModel @Inject constructor(
     }
 
 
-
     private fun getListOfCells() {
         val length: Int = gameSettings.difficulty.x * gameSettings.difficulty.y
-        val numberOfStylesNeeded = length/2
+        val numberOfStylesNeeded = length / 2
 
         //create random seeds to call api with and use for comparison
-        val seeds = listOf("Pixel", "Realistic", "Cool", "Cute", "Dark", "Bright", "Big Ears", "Cruudles", "Personas", "Botts", "Dogs")
+        val seeds = listOf(
+            "Pixel",
+            "Realistic",
+            "Cool",
+            "Cute",
+            "Dark",
+            "Bright",
+            "Big Ears",
+            "Cruudles",
+            "Personas",
+            "Botts",
+            "Dogs"
+        )
             .shuffled().subList(0, 2)
-        val styles = listOf("adventurer", "avataaars", "big-ears", "big-smile", "bottts", "croodles", "lorelei", "micah", "miniavs", "notionists", "open-peeps", "personas", "pixel-art", "thumbs")
+        val styles = listOf(
+            "adventurer",
+            "avataaars",
+            "big-ears",
+            "big-smile",
+            "bottts",
+            "croodles",
+            "lorelei",
+            "micah",
+            "miniavs",
+            "notionists",
+            "open-peeps",
+            "personas",
+            "pixel-art",
+            "thumbs"
+        )
             .shuffled().subList(0, numberOfStylesNeeded)
         //fetch images using seeds and add to cells
         val scope = viewModelScope
-        scope.launch{
+        scope.launch {
             generateCellsWithApiImages(seeds, styles).forEach { cellList.add(it) }
             Log.d("GameViewModel", "Finished getting images")
         }
     }
 
+//    private suspend fun generateCellsWithApiImages(
+//        seeds: List<String>,
+//        styles: List<String>,
+//        ): List<Cell> {
+//        val cellsWithImages: ArrayList<Cell> = ArrayList()
+//        styles.forEach{
+//            val imgOne = getImage(it, seeds[0])
+//            val imgTwo = getImage(it, seeds[1])
+//
+//            cellsWithImages.add(Cell(imgOne, it, false))
+//            cellsWithImages.add(Cell(imgTwo, it, false))
+//            Log.d("Requester", "image added to cell with style: $it")
+//        }
+//        return cellsWithImages.shuffled()
+//    }
+    /**
+     * Fetch async from api
+     */
     private suspend fun generateCellsWithApiImages(
         seeds: List<String>,
-        styles: List<String>,
-        ): List<Cell> {
+        styles: List<String>
+    ): List<Cell> = coroutineScope {
         val cellsWithImages: ArrayList<Cell> = ArrayList()
-        styles.forEach{
-            val imgOne = getImage(it, seeds[0])
-            val imgTwo = getImage(it, seeds[1])
+        val deferredCells = styles.map { style ->
+            async {
+                val imgOne = getImage(style, seeds[0])
+                val imgTwo = getImage(style, seeds[1])
 
-            cellsWithImages.add(Cell(imgOne, it, false))
-            cellsWithImages.add(Cell(imgTwo, it, false))
-            Log.d("Requester", "image added to cell with style: $it")
+                listOf(
+                    Cell(imgOne, style, false),
+                    Cell(imgTwo, style, false)
+                )
+            }
         }
-        return cellsWithImages.shuffled()
+        deferredCells.forEach { deferred ->
+            cellsWithImages.addAll(deferred.await())
+        }
+        cellsWithImages.shuffled()
     }
 
-    private suspend fun getImage(style : String, seed : String): ImageBitmap? {
-        val loader = ImageLoader(context)
+    private suspend fun getImage(style: String, seed: String): ImageBitmap? {
         val request = ImageRequest.Builder(context)
             .data("https://api.dicebear.com/8.x/$style/svg?seed=$seed")
             .decoderFactory(SvgDecoder.Factory())
             .build()
 
         Log.d("Requester", "image requested with style: $style")
-        try {
-            val result = (loader.execute(request) as SuccessResult).drawable
+        return try {
+            val result = (imageLoader.execute(request) as SuccessResult).drawable
             val img = (result as BitmapDrawable).bitmap
-            val imgBitmap = img.asImageBitmap()
-            return imgBitmap
-        } catch (e : ClassCastException) {
+            img.asImageBitmap()
+        } catch (e: ClassCastException) {
             Log.d("Requester", "Image request failed for Style: $style, Seed: $seed")
-            return null
+            null
         }
     }
 
