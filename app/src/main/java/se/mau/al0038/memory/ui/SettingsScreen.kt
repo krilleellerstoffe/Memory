@@ -112,9 +112,9 @@ fun LanguagePicker() {
     )
 
     SettingsDropdown(
-        label = stringResource(id = R.string.languageHeader),
+        label = stringResource(id = R.string.blank_string),
         items = localeOptions.keys.toList(),
-        selectedItem = localeOptions.keys.first(),
+        selectedItem = R.string.languageHeader,
         onItemSelected = {
             AppCompatDelegate.setApplicationLocales(
                 LocaleListCompat.forLanguageTags(localeOptions[it])
@@ -131,9 +131,10 @@ fun DarkModeSwitch() {
         R.string.dark_mode to AppCompatDelegate.MODE_NIGHT_YES,
     )
 
-    SettingsDropdown(label = stringResource(id = R.string.dark_mode_header),
+    SettingsDropdown(
+        label = stringResource(id = R.string.blank_string),
         items = options.keys.toList(),
-        selectedItem = options.keys.first(),
+        selectedItem = R.string.dark_mode_header,
         onItemSelected = {
             options[it]?.let { it1 -> AppCompatDelegate.setDefaultNightMode(it1) }
         }
