@@ -18,4 +18,10 @@
     <string name="three">Tre</string>
     <string name="dark_mode">Mörkt Tema</string>
     <string name="light_mode">Ljust Tema</string>
+    <string name="info_title">Matcha stilen!</string>
+    <string name="info_body">Det finns två bilder av varje stil, dom blir en match</string>
+    <string name="info_examples">Stil exempel: Pixel-Art, Stora öron, Stora leenden, Äventyrare</string>
+    <string name="info_api_fetching">Spelet hämtar bilder från ett  API, vilket ger en variation av bilder.</string>
+    <string name="back_to_menu">Huvudmenyn</string>
+    <string name="game_over">Grattis!</string>
 </resources>

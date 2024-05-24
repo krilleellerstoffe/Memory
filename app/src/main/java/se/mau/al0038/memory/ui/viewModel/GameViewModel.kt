@@ -74,7 +74,6 @@ class GameViewModel @Inject constructor(
             secondCard = flippedCell
         }
         return false
-
     }
 
     fun checkIfMatch() {
@@ -198,7 +197,7 @@ class GameViewModel @Inject constructor(
     private suspend fun getImage(style: String, seed: String): ImageBitmap? {
         val request = ImageRequest.Builder(context)
             .data("https://api.dicebear.com/8.x/$style/svg?seed=$seed")
-            .decoderFactory(SvgDecoder.Factory())
+            .decoderFactory(SvgDecoder.Factory()).size(100, 100)
             .build()
 
         Log.d("Requester", "image requested with style: $style")
