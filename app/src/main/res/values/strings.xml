@@ -11,24 +11,31 @@
     <string name="languageHeader">Language</string>
     <string name="attempts">"Attempts:%1$s"</string>
     <string name="score">"Score:%1$s"</string>
-    <string name="about">Memory was created as a group project to demonstrate a bunch of things.\n
-        Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera.
-    Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera. Lorem ipsum etcetera.
-
-    Lorem ipsum etcetera. Lorem ipsum etcetera. </string>
+    <string name="about">
+        Memory was created as a group project as part of the course Application Development for Android (DA401E) at Malmo University.\n
+        \n
+        The gameplay of Memory is similar to the regular game, the player has to find a matching pair of cards in a grid of hidden cards. Normally, a matching pair of cards have identical images - but in our case the player is looking for matching styles on the images. This increases the difficulty significantly and even experienced players will find it challenging.\n
+        \n
+        If the game feels too easy you can increase the difficulty of the game to Intermediate or even Hard if you really want to challenge yourself.\n
+        \n
+        Once you have mastered the way of the Memory - why don’t you invite a friend to play with you? Compete to find the most pairs using devious tactics and mind boggling strategy.\n
+        \n
+        Created by: \n
+        \n
+        Group 3\n
+        Joel Eriksson Sinclair\n
+        Jesper Kanewoff\n
+        Christopher Liam O’driscoll\n
+        Petter Rignell\n
+        \n
+        We developed Memory using:\n
+        - Jetpack Compose for our user interface\n
+        - Room to store the scores of the player\n
+        - Coil to fetch resources from the API\n
+        - Hilt to simplify dependency injection\n
+        \n
+        We hope you enjoy our game!\n
+    </string>
     <string name="en" translatable="false">English</string>
     <string name="sv" translatable="false">Svenska</string>
     <string name="system_default" translatable="false">Default</string>
@@ -39,4 +46,5 @@
     <string name="three">Three</string>
     <string name="dark_mode">Night Mode</string>
     <string name="light_mode">Light Mode</string>
+    <string name="dark_mode_header">Theme</string>
 </resources>

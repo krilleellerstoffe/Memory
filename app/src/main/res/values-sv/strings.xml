@@ -10,7 +10,31 @@
     <string name="languageHeader">Språk</string>
     <string name="attempts">Försök:%1$s</string>
     <string name="score">Poäng:%1$s</string>
-    <string name="about">Memory är fett.</string>
+    <string name="about">
+        Memory skapades som ett gruppprojekt inom kursen Applikationsutveckling för Android (DA401E) vid Malmö Universitet.\n
+        \n
+        Spelupplägget i Memory liknar det vanliga spelet, där spelaren måste hitta ett par matchande kort i ett rutnät av dolda kort. Normalt har ett par matchande kort identiska bilder - men i vårt fall letar spelaren efter matchande stilar på bilderna. Detta ökar svårighetsgraden avsevärt och även erfarna spelare kommer att finna det utmanande.\n
+        \n
+        Om spelet känns för lätt kan du öka svårighetsgraden till Medel eller till och med Svår om du verkligen vill utmana dig själv.\n
+        \n
+        När du har bemästrat Memory - varför inte bjuda in en vän att spela med dig? Tävla om att hitta flest par med listiga taktiker och häpnadsväckande strategi.\n
+        \n
+        Skapat av:  \n
+        \n
+        Grupp 3\n
+        Joel Eriksson Sinclair\n
+        Jesper Kanewoff\n
+        Christopher Liam O’driscoll\n
+        Petter Rignell\n
+        \n
+        Vi använde oss av:\n
+        - Jetpack Compose för vårt användargränssnitt\n
+        - Room för att lagra spelarens poäng\n
+        - Coil för att hämta resurser från API:et\n
+        - Hilt för att förenkla beroendehanteringen i applikationen\n
+        \n
+        Vi hoppas att ni gillar vårt spel!\n
+    </string>
     <string name="players">Spelare</string>
     <string name="difficulty">Svårighet</string>
     <string name="one">En</string>
@@ -18,4 +42,5 @@
     <string name="three">Tre</string>
     <string name="dark_mode">Mörkt Tema</string>
     <string name="light_mode">Ljust Tema</string>
+    <string name="dark_mode_header">Tema</string>
 </resources>
