@@ -8,15 +8,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,6 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import se.mau.al0038.memory.MemoryTopBar
 import se.mau.al0038.memory.R
@@ -108,9 +111,15 @@ fun GameScreen(
                 title = {
                     val playerStats = gameViewModel.playerStats.getOrElse(gameViewModel.currentPlayer) { PlayerStats() }
                     Text(
-                        text = "Player:${gameViewModel.currentPlayer}" +
-                                "  Attempts:${playerStats.attempts}" +
-                                "  Score:${playerStats.score}"
+                        text = stringResource(
+                            R.string.current_player,
+                            gameViewModel.currentPlayer
+                        ) + " " + stringResource(
+                            R.string.attempts,
+                            playerStats.attempts
+                        ) + " " + stringResource(
+                            R.string.score,
+                            playerStats.score)
                     )
                 }
             )
@@ -127,33 +136,53 @@ fun GameScreen(
             Log.d("Game Screen", "Cells count : ${cells.count()}")
             if(cells.count() == (gameViewModel.gameSettings.difficulty.x * gameViewModel.gameSettings.difficulty.y)) {
 
-            for(i in (0..<gameViewModel.gameSettings.difficulty.x)) {
+                for(i in (0..<gameViewModel.gameSettings.difficulty.x)) {
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
 
-                    for (j in (0..<gameViewModel.gameSettings.difficulty.y)) {
-                        val clickIndex = index
-                        MemoryButton(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight(),
-                                cell = cells[index],
-                                clickIndex = clickIndex,
-                                cardFlipFunction =  gameViewModel::cardFlippedFunction,
-                                onFlipFinish = gameViewModel::checkIfMatch
+                        for (j in (0..<gameViewModel.gameSettings.difficulty.y)) {
+                            val clickIndex = index
+                            MemoryButton(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
+                                    cell = cells[index],
+                                    clickIndex = clickIndex,
+                                    cardFlipFunction =  gameViewModel::cardFlippedFunction,
+                                    onFlipFinish = gameViewModel::checkIfMatch
 
-                        )
-                        index++
+                            )
+                            index++
+                        }
                     }
                 }
             }
+            else {
+                LoadingInformation()
             }
         }
+    }
+}
+
+@Composable
+fun LoadingInformation() {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Match the style!", fontSize = 25.sp)
+        Spacer(modifier = Modifier.padding(10.dp))
+        Text(text = "There are two different pictures in each art style, those would be a match.", fontSize = 20.sp)
+        Text(text = "Style examples: Pixel-Art, Big-Ears, Big-Smile, Adventurer", fontSize = 20.sp)
+        Spacer(modifier = Modifier.padding(20.dp))
+        Text(text = "The game fetches the images from an API, which should allow for a nice variation of images.", fontSize = 20.sp)
+        Spacer(modifier = Modifier.padding(20.dp))
+        CircularProgressIndicator()
     }
 }
 
@@ -204,25 +233,20 @@ fun MemoryButton(
                     }
                 )
             } else {
-                Image(
-                    imageVector = Icons.Default.Done,
-                    contentDescription = null,
+                Text(
+                    text = cell.style,
                     modifier = Modifier.graphicsLayer {
                         alpha = fadeImageIn
                     }
                 )
             }
-            Text(text = cell.style,
-                modifier = Modifier.graphicsLayer {
-                    alpha = fadeImageIn
-                })
         } else {
             Image(
-                imageVector = Icons.Default.Menu,
+                painter = painterResource(id = R.drawable.question_mark),
                 contentDescription = null,
                 modifier = Modifier.graphicsLayer {
                     alpha = fadeImageOut
-                }
+                }.align(Alignment.CenterHorizontally)
             )
         }
     }
