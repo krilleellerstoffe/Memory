@@ -24,4 +24,7 @@
     <string name="info_api_fetching">Spelet hämtar bilder från ett  API, vilket ger en variation av bilder.</string>
     <string name="back_to_menu">Huvudmenyn</string>
     <string name="game_over">Grattis!</string>
+    <string name="save_high_score">Spara rekord</string>
+    <string name="dont_save">Spara ej</string>
+    <string name="highscore_card">Namn: %s\nPoäng: %s\nFörsök: %s</string>
 </resources>

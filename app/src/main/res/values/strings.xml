@@ -47,4 +47,5 @@
     <string name="game_over">Congratulations!</string>
     <string name="save_high_score">Save high score</string>
     <string name="dont_save">Don\'t save</string>
+    <string name="highscore_card">Name: %s\nScore: %d\nAttempts: %d</string>
 </resources>
