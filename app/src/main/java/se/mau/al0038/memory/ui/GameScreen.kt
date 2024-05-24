@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -255,8 +256,9 @@ fun MemoryButton(
                 )
             }
         } else {
+            val darkTheme =  isSystemInDarkTheme()
             Image(
-                painter = painterResource(id = R.drawable.start_background),
+                painter = painterResource(id = if(darkTheme) R.drawable.start_background_night else R.drawable.start_background),
                 contentDescription = null,
                 modifier = Modifier
                     .graphicsLayer {
