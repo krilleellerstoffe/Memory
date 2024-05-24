@@ -142,8 +142,7 @@ class GameViewModel @Inject constructor(
             "notionists",
             "open-peeps",
             "personas",
-            "pixel-art",
-            "thumbs"
+            "pixel-art"
         )
             .shuffled().subList(0, numberOfStylesNeeded)
         //fetch images using seeds and add to cells

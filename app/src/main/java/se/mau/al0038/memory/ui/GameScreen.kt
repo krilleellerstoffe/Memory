@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -19,7 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -69,7 +70,7 @@ fun GameScreen(
 
     if (gameViewModel.isGameOver) {
         AlertDialog(
-            onDismissRequest = { /*TODO*/ },
+            onDismissRequest = { /*DO NOTHING*/ },
             title = { Text(text = stringResource(id = R.string.game_over)) },
             confirmButton = {
                 Column(
@@ -209,20 +210,21 @@ fun MemoryButton(
         animationSpec = tween(500),
         finishedListener = {
             onFlipFinish()
-        }
+        }, label = "flipAnimation"
     )
     ////adjust alpha
     val fadeImageOut by animateFloatAsState(
         targetValue = if(!cell.isFlipped) 1f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "fadeImageOut"
     )
     val fadeImageIn by animateFloatAsState(
         targetValue = if(cell.isFlipped) 1f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500),
+        label = "fadeImageIn"
     )
 
     Card(
-        colors = CardDefaults.cardColors(containerColor = Color.White),
         modifier = modifier
             .clickable {
                 if (cell.isFlipped) {
@@ -235,38 +237,47 @@ fun MemoryButton(
             }
             .border(2.dp, Color.Black)
     ) {
-        if (cell.isFlipped) {
-            if (cell.image != null) {
+        Box(
+            Modifier
+                .background(Brush.verticalGradient(
+                    listOf(
+                        MaterialTheme.colorScheme.secondaryContainer,
+                        MaterialTheme.colorScheme.tertiaryContainer)))
+        )
+        {
+            if (cell.isFlipped) {
+                if (cell.image != null) {
+                    Image(
+                        bitmap = cell.image,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .graphicsLayer {
+                                alpha = fadeImageIn
+                            }
+                            .fillMaxSize(),
+                        contentScale = ContentScale.FillWidth,
+                    )
+                } else {
+                    Text(
+                        text = cell.style,
+                        modifier = Modifier.graphicsLayer {
+                            alpha = fadeImageIn
+                        }
+                    )
+                }
+            } else {
+                val darkTheme =  isSystemInDarkTheme()
                 Image(
-                    bitmap = cell.image,
+                    painter = painterResource(id = if(darkTheme) R.drawable.start_background_night else R.drawable.start_background),
                     contentDescription = null,
                     modifier = Modifier
                         .graphicsLayer {
-                            alpha = fadeImageIn
+                            alpha = fadeImageOut
                         }
                         .fillMaxSize(),
-                    contentScale = ContentScale.FillWidth,
-                )
-            } else {
-                Text(
-                    text = cell.style,
-                    modifier = Modifier.graphicsLayer {
-                        alpha = fadeImageIn
-                    }
+                    contentScale = ContentScale.FillBounds,
                 )
             }
-        } else {
-            val darkTheme =  isSystemInDarkTheme()
-            Image(
-                painter = painterResource(id = if(darkTheme) R.drawable.start_background_night else R.drawable.start_background),
-                contentDescription = null,
-                modifier = Modifier
-                    .graphicsLayer {
-                        alpha = fadeImageOut
-                    }
-                    .fillMaxSize(),
-                contentScale = ContentScale.FillBounds,
-            )
         }
     }
 }
