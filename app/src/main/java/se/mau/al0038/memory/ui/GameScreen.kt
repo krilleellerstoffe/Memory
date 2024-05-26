@@ -54,8 +54,7 @@ fun GameScreen(
     onBackButtonClick: () -> Unit,
     onViewHighScore: () -> Unit,
     settings: Settings
-)
-{
+) {
     LaunchedEffect(true) {
         gameViewModel.generateGrid(settings)
     }
@@ -94,7 +93,7 @@ fun GameScreen(
                             //clear viewmodel
                         },
                     ) {
-                        Text(text =   stringResource(id = R.string.back_to_menu))
+                        Text(text = stringResource(id = R.string.back_to_menu))
                     }
                 }
             },
@@ -117,7 +116,8 @@ fun GameScreen(
                 onBackClick = onBackButtonClick,
                 true,
                 title = {
-                    val playerStats = gameViewModel.playerStats.getOrElse(gameViewModel.currentPlayer) { PlayerStats() }
+                    val playerStats =
+                        gameViewModel.playerStats.getOrElse(gameViewModel.currentPlayer) { PlayerStats() }
                     Text(
                         text = stringResource(
                             R.string.current_player,
@@ -127,24 +127,34 @@ fun GameScreen(
                             playerStats.attempts
                         ) + " " + stringResource(
                             R.string.score,
-                            playerStats.score)
+                            playerStats.score
+                        )
                     )
                 }
             )
         }
-    ) {innerPadding ->
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
 
             var index = 0
             Log.d("Game Screen", "Cells count : ${cells.count()}")
-            if(cells.count() == (gameViewModel.gameSettings.difficulty.x * gameViewModel.gameSettings.difficulty.y)) {
+            var informationDismissed by remember {
+                mutableStateOf(false)
+            }
+            var loadingFinished by remember {
+                mutableStateOf(false)
+            }
+            if (cells.count() == (gameViewModel.gameSettings.difficulty.x * gameViewModel.gameSettings.difficulty.y)) {
+                loadingFinished = true
+            }
+            if (informationDismissed && loadingFinished) {
 
-                for(i in (0..<gameViewModel.gameSettings.difficulty.x)) {
+                for (i in (0..<gameViewModel.gameSettings.difficulty.x)) {
 
                     Row(
                         modifier = Modifier
@@ -159,25 +169,32 @@ fun GameScreen(
                                 modifier = Modifier
                                     .weight(1f)
                                     .fillMaxHeight(),
-                                    cell = cells[index],
-                                    clickIndex = clickIndex,
-                                    cardFlipFunction =  gameViewModel::cardFlippedFunction,
-                                    onFlipFinish = gameViewModel::checkIfMatch
+                                cell = cells[index],
+                                clickIndex = clickIndex,
+                                cardFlipFunction = gameViewModel::cardFlippedFunction,
+                                onFlipFinish = gameViewModel::checkIfMatch
                             )
                             index++
                         }
                     }
                 }
-            }
-            else {
-                LoadingInformation()
+            } else {
+                LoadingInformation(
+                    onDismissed = {
+                        informationDismissed = true
+                    },
+                    loadingFinished = loadingFinished
+                )
             }
         }
     }
 }
 
 @Composable
-fun LoadingInformation() {
+fun LoadingInformation(
+    onDismissed: () -> Unit,
+    loadingFinished: Boolean
+) {
     Box {
         Background()
 
@@ -192,7 +209,17 @@ fun LoadingInformation() {
             Spacer(modifier = Modifier.padding(20.dp))
             Text(text = stringResource(id = R.string.info_api_fetching), fontSize = 20.sp)
             Spacer(modifier = Modifier.padding(20.dp))
-            CircularProgressIndicator()
+            if (loadingFinished) {
+                Button(onClick = onDismissed) {
+                    Text(
+                        text = stringResource(id = R.string.click_to_start),
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+
+                }
+            } else {
+                CircularProgressIndicator()
+            }
         }
     }
 }
@@ -204,7 +231,7 @@ fun MemoryButton(
     clickIndex: Int,
     cardFlipFunction: (Int) -> Boolean,
     onFlipFinish: () -> Unit
-){
+) {
     val flipAnimation by animateFloatAsState(
         targetValue = if (cell.isFlipped) 360f else 0f,
         animationSpec = tween(500),
@@ -214,12 +241,12 @@ fun MemoryButton(
     )
     ////adjust alpha
     val fadeImageOut by animateFloatAsState(
-        targetValue = if(!cell.isFlipped) 1f else 0f,
+        targetValue = if (!cell.isFlipped) 1f else 0f,
         animationSpec = tween(500),
         label = "fadeImageOut"
     )
     val fadeImageIn by animateFloatAsState(
-        targetValue = if(cell.isFlipped) 1f else 0f,
+        targetValue = if (cell.isFlipped) 1f else 0f,
         animationSpec = tween(500),
         label = "fadeImageIn"
     )
@@ -239,10 +266,14 @@ fun MemoryButton(
     ) {
         Box(
             Modifier
-                .background(Brush.verticalGradient(
-                    listOf(
-                        MaterialTheme.colorScheme.secondaryContainer,
-                        MaterialTheme.colorScheme.tertiaryContainer)))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.secondaryContainer,
+                            MaterialTheme.colorScheme.tertiaryContainer
+                        )
+                    )
+                )
         )
         {
             if (cell.isFlipped) {
@@ -266,9 +297,9 @@ fun MemoryButton(
                     )
                 }
             } else {
-                val darkTheme =  isSystemInDarkTheme()
+                val darkTheme = isSystemInDarkTheme()
                 Image(
-                    painter = painterResource(id = if(darkTheme) R.drawable.start_background_night else R.drawable.start_background),
+                    painter = painterResource(id = if (darkTheme) R.drawable.start_background_night else R.drawable.start_background),
                     contentDescription = null,
                     modifier = Modifier
                         .graphicsLayer {

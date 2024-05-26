@@ -52,4 +52,5 @@
     <string name="save_high_score">Spara rekord</string>
     <string name="dont_save">Spara ej</string>
     <string name="highscore_card">Namn: %s\nPoäng: %s\nFörsök: %s</string>
+    <string name="click_to_start">Börjar spelet!</string>
 </resources>

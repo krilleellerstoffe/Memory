@@ -57,4 +57,5 @@
     <string name="dont_save">Don\'t save</string>
     <string name="highscore_card">Name: %s\nScore: %d\nAttempts: %d</string>
     <string name="blank_string" translatable="false"> </string>
+    <string name="click_to_start">Click to start!</string>
 </resources>
