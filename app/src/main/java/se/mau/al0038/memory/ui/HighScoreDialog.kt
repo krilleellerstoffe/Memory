@@ -32,7 +32,7 @@ fun HighScoreDialog(
             contentAlignment = Alignment.Center
         ){
             AlertDialog(
-                onDismissRequest = { onDismissRequest() },
+                onDismissRequest = { /*DO NOTHING */ },
                 title = { Text(text = stringResource(id = R.string.highscore)) },
                 text = {
                     TextField(value = highScoreInputViewModel.playerName, onValueChange = { highScoreInputViewModel.playerName = it })

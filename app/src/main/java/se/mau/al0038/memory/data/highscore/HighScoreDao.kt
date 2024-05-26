@@ -11,6 +11,6 @@ interface HighScoreDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(highScore: HighScore)
 
-    @Query("SELECT * from high_scores ORDER BY attempts ASC, score DESC")
+    @Query("SELECT * from high_scores ORDER BY score DESC, attempts ASC")
     fun getAllItems(): Flow<List<HighScore>>
 }

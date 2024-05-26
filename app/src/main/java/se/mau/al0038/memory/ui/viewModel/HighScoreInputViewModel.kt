@@ -26,7 +26,7 @@ class HighScoreInputViewModel @Inject constructor(
     private val highScores = mutableStateListOf<HighScore>()
 
     companion object {
-        const val HIGH_SCORE_NUM_ENTRIES: Int = 10
+        const val HIGH_SCORE_NUM_ENTRIES: Int = 100
     }
 
     init {
