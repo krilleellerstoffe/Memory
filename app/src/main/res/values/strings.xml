@@ -36,8 +36,6 @@
         \n
         We hope you enjoy our game!\n
     </string>
-    <string name="en" translatable="false">English</string>
-    <string name="sv" translatable="false">Svenska</string>
     <string name="system_default" translatable="false">Default</string>
     <string name="players">Players</string>
     <string name="difficulty">Difficulty</string>
@@ -58,4 +56,6 @@
     <string name="highscore_card">Name: %s\nScore: %d\nAttempts: %d</string>
     <string name="blank_string" translatable="false"> </string>
     <string name="click_to_start">Click to start!</string>
+    <string name="english" translatable="false">English</string>
+    <string name="swedish" translatable="false">Svenska</string>
 </resources>

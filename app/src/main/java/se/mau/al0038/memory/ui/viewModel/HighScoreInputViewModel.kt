@@ -18,7 +18,7 @@ import javax.inject.Inject
 class HighScoreInputViewModel @Inject constructor(
     //Hilt Impl
     private val repository: HighScoreRepository
-): ViewModel() {
+) : ViewModel() {
 
     var newHighScore by mutableStateOf(false)
     var playerName by mutableStateOf("")

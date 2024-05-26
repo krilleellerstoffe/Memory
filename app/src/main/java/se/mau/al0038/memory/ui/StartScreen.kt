@@ -43,11 +43,11 @@ import se.mau.al0038.memory.R
 import se.mau.al0038.memory.data.Difficulty
 import se.mau.al0038.memory.data.PlayerCount
 import se.mau.al0038.memory.data.Settings
-import se.mau.al0038.memory.ui.viewModel.StartScreenViewModel
+import se.mau.al0038.memory.ui.viewModel.SettingsViewModel
 
 @Composable
 fun StartScreen(
-    startScreenViewModel: StartScreenViewModel = viewModel(),
+    settingsViewModel: SettingsViewModel,
     onStartButtonClick: (Settings) -> Unit,
     onSettingsClick: () -> Unit,
     onHighScoreClick: () -> Unit
@@ -92,10 +92,10 @@ fun StartScreen(
                     SettingsDropdown(
                         label = stringResource(id = R.string.players),
                         items = playerCountIds,
-                        selectedItem = startScreenViewModel.gameSettings.playerCount.stringId,
+                        selectedItem = settingsViewModel.gameSettings.playerCount.stringId,
                         onItemSelected = {
-                            startScreenViewModel.gameSettings =
-                                startScreenViewModel.gameSettings.copy(
+                            settingsViewModel.gameSettings =
+                                settingsViewModel.gameSettings.copy(
                                     playerCount = PlayerCount.fromStringId(it)
                                 )
                         })
@@ -108,10 +108,10 @@ fun StartScreen(
                     SettingsDropdown(
                         label = stringResource(id = R.string.difficulty),
                         items = difficultyIds,
-                        selectedItem = startScreenViewModel.gameSettings.difficulty.stringId,
+                        selectedItem = settingsViewModel.gameSettings.difficulty.stringId,
                         onItemSelected = {
-                            startScreenViewModel.gameSettings =
-                                startScreenViewModel.gameSettings.copy(
+                            settingsViewModel.gameSettings =
+                                settingsViewModel.gameSettings.copy(
                                     difficulty = Difficulty.fromStringId(it)
                                 )
                         })
@@ -119,7 +119,7 @@ fun StartScreen(
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
                     onClick = {
-                        onStartButtonClick(startScreenViewModel.gameSettings)
+                        onStartButtonClick(settingsViewModel.gameSettings)
                     },
                     modifier = Modifier
                         .padding(8.dp)
@@ -222,8 +222,8 @@ fun SettingsDropdown(
                 DropdownMenuItem(
                     text = { Text(text = stringResource(id = item)) },
                     onClick = {
-                        onItemSelected(item)
                         expanded = !expanded
+                        onItemSelected(item)
                     }
                 )
             }
@@ -233,10 +233,10 @@ fun SettingsDropdown(
 
 @Composable
 fun Background() {
-    val darkTheme =  isSystemInDarkTheme()
+    val darkTheme = isSystemInDarkTheme()
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
-            painter = painterResource(id = if(darkTheme) R.drawable.start_background_night else R.drawable.start_background),
+            painter = painterResource(id = if (darkTheme) R.drawable.start_background_night else R.drawable.start_background),
             contentDescription = "Background",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
@@ -248,6 +248,7 @@ fun Background() {
 @Composable
 fun StartScreenPreview() {
     StartScreen(
+        settingsViewModel = viewModel(),
         onStartButtonClick = {},
         onSettingsClick = {},
         onHighScoreClick = {}

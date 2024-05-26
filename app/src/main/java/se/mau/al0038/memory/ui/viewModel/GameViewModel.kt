@@ -51,7 +51,7 @@ class GameViewModel @Inject constructor(
     fun generateGrid(settings: Settings) {
         gameSettings = settings
 
-        for (i in 0..< gameSettings.playerCount.count) {
+        for (i in 0..<gameSettings.playerCount.count) {
             playerStats.add(PlayerStats())
         }
 

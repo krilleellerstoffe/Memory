@@ -121,7 +121,7 @@ fun GameScreen(
                     Text(
                         text = stringResource(
                             R.string.current_player,
-                            gameViewModel.currentPlayer
+                            gameViewModel.currentPlayer + 1
                         ) + " " + stringResource(
                             R.string.attempts,
                             playerStats.attempts

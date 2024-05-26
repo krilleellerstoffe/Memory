@@ -1,6 +1,7 @@
 package se.mau.al0038.memory.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,10 +15,12 @@ import se.mau.al0038.memory.ui.GameScreen
 import se.mau.al0038.memory.ui.HighScoreScreen
 import se.mau.al0038.memory.ui.SettingsScreen
 import se.mau.al0038.memory.ui.StartScreen
+import se.mau.al0038.memory.ui.viewModel.SettingsViewModel
 
 @Composable
 fun MemoryNavHost(
     navController: NavHostController = rememberNavController(),
+    settingsViewModel: SettingsViewModel = viewModel()
 ) {
 
     NavHost(
@@ -27,6 +30,7 @@ fun MemoryNavHost(
 
         composable(route = "Start") {
             StartScreen(
+                settingsViewModel = settingsViewModel,
                 onStartButtonClick = {
                     navController.navigate("Game/${it.difficulty.name}/${it.playerCount}")
                 },
@@ -53,6 +57,7 @@ fun MemoryNavHost(
 
         composable(route = "Settings") {
             SettingsScreen(
+                settingsViewModel = settingsViewModel,
                 onBackButtonClick = { navController.popBackStack("Start", false) }
             )
         }

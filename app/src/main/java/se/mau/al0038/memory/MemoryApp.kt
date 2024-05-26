@@ -14,7 +14,7 @@ import se.mau.al0038.memory.navigation.MemoryNavHost
 @Composable
 fun MemoryApp(
 
-){
+) {
     MemoryNavHost()
 }
 
@@ -24,11 +24,11 @@ fun MemoryTopBar(
     onBackClick: () -> Unit,
     canNavigateBack: Boolean,
     title: @Composable () -> Unit = { Text(stringResource(id = R.string.app_name)) }
-){
+) {
     TopAppBar(
         navigationIcon = {
-            if(canNavigateBack){
-                IconButton(onClick = onBackClick){
+            if (canNavigateBack) {
+                IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = null

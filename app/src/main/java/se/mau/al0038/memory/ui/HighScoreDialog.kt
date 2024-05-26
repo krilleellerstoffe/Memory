@@ -30,20 +30,22 @@ fun HighScoreDialog(
     if (highScoreInputViewModel.newHighScore) {
         Box(
             contentAlignment = Alignment.Center
-        ){
+        ) {
             AlertDialog(
                 onDismissRequest = { /*DO NOTHING */ },
                 title = { Text(text = stringResource(id = R.string.highscore)) },
                 text = {
-                    TextField(value = highScoreInputViewModel.playerName, onValueChange = { highScoreInputViewModel.playerName = it })
+                    TextField(
+                        value = highScoreInputViewModel.playerName,
+                        onValueChange = { highScoreInputViewModel.playerName = it })
                 },
                 confirmButton = {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ){
+                    ) {
                         Button(
-                            onClick = { highScoreInputViewModel.insertNewHighScore(playerStats);onViewHighScore()},
+                            onClick = { highScoreInputViewModel.insertNewHighScore(playerStats);onViewHighScore() },
                         ) {
                             Text(text = stringResource(id = R.string.save_high_score))
                         }
